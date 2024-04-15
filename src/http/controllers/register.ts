@@ -20,7 +20,7 @@ export const register = async (req: FastifyRequest, reply: FastifyReply) => {
     await registerService.execute({ name, email, password });
   } catch (error) {
     if (error instanceof UserAlreadyExists) {
-      reply.status(409).send(error);
+      reply.status(409).send(error.message);
     }
 
     return reply.status(500).send();
