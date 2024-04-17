@@ -1,22 +1,107 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { InMemoryCheckInsRepository } from "../repositories/in-memory/in-memory-check-ins-repository";
 import { CheckInService } from "./checkin";
+import { InMemoryGymsRepository } from "../repositories/in-memory/in-memory-gyms-repository";
+import { Decimal } from "@prisma/client/runtime/library";
 
 let inMemoryCheckInsRepository: InMemoryCheckInsRepository;
-let checkInService: CheckInService
+let inMemoryGymsRepository: InMemoryGymsRepository;
+let checkInService: CheckInService;
 
-describe("CHECKIN SERVICE", () =>{
-    beforeEach(() =>{
-        inMemoryCheckInsRepository = new InMemoryCheckInsRepository();
-        checkInService = new CheckInService(inMemoryCheckInsRepository);
-    })
+describe("CHECKIN SERVICE", () => {
+  beforeEach(() => {
+    inMemoryCheckInsRepository = new InMemoryCheckInsRepository();
+    inMemoryGymsRepository = new InMemoryGymsRepository();
+    checkInService = new CheckInService(
+      inMemoryCheckInsRepository,
+      inMemoryGymsRepository
+    );
 
-    it("should be able to check in", async () =>{
-        const { checkIn } = await checkInService.execute({
-            gymId: "gym-1",
-            userId: "user-1"
-        })
+    inMemoryGymsRepository.itens.push({
+      id: "gym-1",
+      title: "gym 01",
+      description: "",
+      phone: "",
+      latitude: new Decimal(-21.417827),
+      Longitude: new Decimal(-45.955703),
+    });
 
-        expect(checkIn.id).toEqual(expect.any(String))
-    })
-})
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("should be able to check in", async () => {
+    const { checkIn } = await checkInService.execute({
+      gymId: "gym-1",
+      userId: "user-1",
+      userLatitude: -21.417827,
+      userLongitude: -45.955703,
+    });
+
+    expect(checkIn.id).toEqual(expect.any(String));
+  });
+
+  it("should not be able to check in twice in the same day", async () => {
+    vi.setSystemTime(new Date(2023, 0, 20, 8, 0, 0));
+
+    await checkInService.execute({
+      gymId: "gym-1",
+      userId: "user-1",
+      userLatitude: -21.417827,
+      userLongitude: -45.955703,
+    });
+
+    await expect(() =>
+      checkInService.execute({
+        gymId: "gym-1",
+        userId: "user-1",
+        userLatitude: -21.417827,
+        userLongitude: -45.955703,
+      })
+    ).rejects.toBeInstanceOf(Error);
+  });
+
+  it("should be able to check twice but in different days", async () => {
+    vi.setSystemTime(new Date(2023, 0, 20, 8, 0, 0));
+
+    await checkInService.execute({
+      gymId: "gym-1",
+      userId: "user-1",
+      userLatitude: -21.417827,
+      userLongitude: -45.955703,
+    });
+
+    vi.setSystemTime(new Date(2023, 0, 28, 8, 0, 0));
+    const { checkIn } = await checkInService.execute({
+      gymId: "gym-1",
+      userId: "user-1",
+      userLatitude: -21.417827,
+      userLongitude: -45.955703,
+    });
+
+    expect(checkIn.id).toEqual(expect.any(String));
+  });
+
+  it("should not be able to check in on distant gym", async () => {
+    inMemoryGymsRepository.itens.push({
+      id: "gym-2",
+      title: "gym 02",
+      description: "",
+      phone: "",
+      latitude: new Decimal(-21.417827),
+      Longitude: new Decimal(-45.955703),
+    });
+
+    await expect(() =>
+      checkInService.execute({
+        gymId: "gym-2",
+        userId: "user-1",
+        userLatitude: -21.517827,
+        userLongitude: -46.055703,
+      })
+    ).rejects.toBeInstanceOf(Error);
+  });
+});
