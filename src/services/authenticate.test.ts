@@ -8,7 +8,7 @@ let inMemoryUsersRepository: InMemoryUsersRepository;
 let authenticateService: AuthenticateService;
 
 describe("AUTHENTICATE SERVICE", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     inMemoryUsersRepository = new InMemoryUsersRepository();
     authenticateService = new AuthenticateService(inMemoryUsersRepository);
   });

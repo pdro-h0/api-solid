@@ -7,7 +7,7 @@ let inMemoryCheckInsRepository: InMemoryCheckInsRepository;
 let validateCheckInService: ValidateCheckInService;
 
 describe("VALIDATE CHECK IN", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     inMemoryCheckInsRepository = new InMemoryCheckInsRepository();
     validateCheckInService = new ValidateCheckInService(
       inMemoryCheckInsRepository

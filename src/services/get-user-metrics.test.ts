@@ -6,7 +6,7 @@ let inMemoryCheckInsRepository: InMemoryCheckInsRepository;
 let getUserMetricsService: GetUserMetricsService;
 
 describe("GET USER METRICS", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     inMemoryCheckInsRepository = new InMemoryCheckInsRepository();
     getUserMetricsService = new GetUserMetricsService(
       inMemoryCheckInsRepository

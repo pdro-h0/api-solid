@@ -7,7 +7,7 @@ let inMemoryGymsRepository: InMemoryGymsRepository;
 let searchGymsService: SearchGymsService;
 
 describe("SEARCH GYMS", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     inMemoryGymsRepository = new InMemoryGymsRepository();
     searchGymsService = new SearchGymsService(inMemoryGymsRepository);
   });

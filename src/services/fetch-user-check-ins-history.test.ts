@@ -6,7 +6,7 @@ let inMemoryCheckInsRepository: InMemoryCheckInsRepository;
 let fetchUserCheckInHistorySerive: FetchUserCheckInHistorySerive;
 
 describe("fetch-user-check-ins-history", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     inMemoryCheckInsRepository = new InMemoryCheckInsRepository();
     fetchUserCheckInHistorySerive = new FetchUserCheckInHistorySerive(
       inMemoryCheckInsRepository

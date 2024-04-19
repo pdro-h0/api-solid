@@ -6,7 +6,7 @@ let inMemoryGymsRepository: InMemoryGymsRepository;
 let createGymService: CreateGymService;
 
 describe("CREATE GYM SERVICE", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     inMemoryGymsRepository = new InMemoryGymsRepository();
     createGymService = new CreateGymService(inMemoryGymsRepository);
   });

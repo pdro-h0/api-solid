@@ -8,7 +8,7 @@ let inMemoryUsersRepository: InMemoryUsersRepository;
 let registerService: RegisterService;
 
 describe("REGISTER SERVICE", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     inMemoryUsersRepository = new InMemoryUsersRepository();
     registerService = new RegisterService(inMemoryUsersRepository);
   });

@@ -8,7 +8,7 @@ let inMemoryRepository: InMemoryUsersRepository;
 let getUserService: GetUserService;
 
 describe("GET USER PROFILE SERVICE", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     inMemoryRepository = new InMemoryUsersRepository();
     getUserService = new GetUserService(inMemoryRepository);
   });
