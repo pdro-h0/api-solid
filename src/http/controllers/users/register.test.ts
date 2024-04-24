@@ -1,19 +1,17 @@
-import "dotenv/config"
+import "dotenv/config";
 
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { app } from "../../app";
+import { app } from "../../../app";
 import request from "supertest";
 
 describe("REGISTER (e2e)", () => {
-    beforeAll(async () => {
-        await app.ready()
-    })
+  beforeAll(async () => {
+    await app.ready();
+  });
 
-    afterAll(async () => {
-        await app.close()
-    })
-
-    console.log(process.env.DATABASE_URL)
+  afterAll(async () => {
+    await app.close();
+  });
 
   it("should be able to register", async () => {
     const response = await request(app.server).post("/users").send({

@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
-import { InvalidCredentialsError } from "../../services/errors/invalid-credentials-error";
-import { makeAuthenticateService } from "../../services/factories/make-authenticate-service";
+import { InvalidCredentialsError } from "../../../services/errors/invalid-credentials-error";
+import { makeAuthenticateService } from "../../../services/factories/make-authenticate-service";
 
 export const authenticate = async (
   req: FastifyRequest,
@@ -34,7 +34,6 @@ export const authenticate = async (
     return reply.send({
       token,
     });
-    
   } catch (error) {
     if (error instanceof InvalidCredentialsError) {
       return reply.status(400).send(error.message);
