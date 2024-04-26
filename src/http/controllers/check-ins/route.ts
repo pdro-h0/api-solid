@@ -9,7 +9,7 @@ export const checkInsRoutes = async (app: FastifyInstance) => {
   app.addHook("onRequest", verifyJt);
 
   app.get("/check-ins/history", history);
-  app.get("check-ins/metrics", metrics);
+  app.get("/check-ins/metrics", metrics);
   app.patch("/check-ins/:checkInId/validate", validate);
 
   app.post("/gyms/:gymId/check-ins", create);
