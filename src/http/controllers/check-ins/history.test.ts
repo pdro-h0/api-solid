@@ -14,7 +14,7 @@ describe("CHECK-IN HISTORY (e2e)", () => {
   });
 
   it.only("should be able to get check-in history", async () => {
-    const { token } = await createAndAuthenticate(app);
+    const { token } = await createAndAuthenticate(app, true);
 
     const user = await db.user.findFirstOrThrow();
 

@@ -13,7 +13,7 @@ describe("VALIDATE CHECK-IN (e2e)", () => {
   });
 
   it.only("should be able to validate check-in", async () => {
-    const { token } = await createAndAuthenticate(app);
+    const { token } = await createAndAuthenticate(app, true);
 
     const user = await db.user.findFirstOrThrow();
 
